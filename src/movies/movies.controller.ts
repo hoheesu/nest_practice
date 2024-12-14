@@ -8,12 +8,15 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { MoviesService } from './movies.service';
 
 @Controller('movies')
 export class MoviesController {
+  constructor(private readonly moviesService: MoviesService) {}
+
   @Get()
   getAll() {
-    return 'all movies';
+    return this.moviesService.getAll();
   }
 
   @Get('search')
@@ -31,10 +34,12 @@ export class MoviesController {
     console.log(movieData);
     return movieData;
   }
+
   @Delete('/:id/')
   remove(@Param('id') movieId: string) {
     return `delete ${movieId} movie`;
   }
+
   @Patch('/:id/')
   patch(@Param('id') movieId: string, @Body() updateData) {
     return {
